@@ -1,8 +1,7 @@
-
-
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:omega_evaluation_project/commons/config_interceptor.dart';
 
@@ -11,17 +10,18 @@ import 'package:omega_evaluation_project/ui/home_injector.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'handle_background_notification.dart';
+import 'package:omega_evaluation_project/ui/handle_notification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var pref = await SharedPreferences.getInstance();
   await init();
   runApp(AppInjector(
     child: OmegaTestApp(),
     preferences: pref,
   ));
   await AndroidAlarmManager.periodic(
-      const Duration(minutes: 1), 1, proccessNotification);
+      const Duration(seconds: 10), 1, proccessNotification);
 }
 
 class OmegaTestApp extends StatelessWidget {
@@ -115,4 +115,18 @@ class AppInjector extends StatelessWidget {
       child: child,
     );
   }
+}
+
+class ReceivedNotification {
+  final int id;
+  final String title;
+  final String body;
+  final String payload;
+
+  ReceivedNotification({
+    @required this.id,
+    @required this.title,
+    @required this.body,
+    @required this.payload,
+  });
 }

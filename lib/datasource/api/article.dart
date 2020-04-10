@@ -104,7 +104,7 @@ class Article {
 
   bool get showAble {
     var now = DateTime.now();
-    return now.compareTo(createDate) > 0 && now.compareTo(expireDate) < 0;
+    return (createDate == null || now.compareTo(createDate) > 0) && (expireDate==null || now.compareTo(expireDate) < 0);
   }
 
   factory Article.fromJson(Map<String, dynamic> json) =>
